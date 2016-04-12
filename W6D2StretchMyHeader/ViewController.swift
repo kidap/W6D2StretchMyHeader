@@ -126,7 +126,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
       //Set starting y position of the view
       self.customTableHeaderView.frame.origin.y = self.tableView.contentOffset.y
       //Increase size by increasing/decreasing size based on offset
-      self.customTableHeaderView.frame.size.height = kTableHeaderHeight + -self.tableView.contentOffset.y - kTableHeaderHeight
+      self.customTableHeaderView.frame.size.height = -self.tableView.contentOffset.y
       
       print(self.customTableHeaderView.frame.origin.y)
       print(self.customTableHeaderView.frame.size.height)
