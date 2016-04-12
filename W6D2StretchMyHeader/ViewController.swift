@@ -102,20 +102,25 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     self.tableView.rowHeight = UITableViewAutomaticDimension
     
     self.navigationController?.navigationBar.hidden = true
-    UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
+//    UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     
     //Table view properties
     self.tableView.tableHeaderView = nil
     self.tableView.addSubview(self.customTableHeaderView)
-    
+   
+    //Set position of the header view/image
     self.customTableHeaderView.frame.origin.y -= kTableHeaderHeight
-    
+  
+    //Adjust the starting position of the table view
     self.tableView.contentInset.top = kTableHeaderHeight
-    self.tableView.contentOffset.y = -kTableHeaderHeight
+    //self.tableView.contentOffset.y = -kTableHeaderHeight //Would be needed if using TableViewController
   }
   func prepareDelegates(){
     self.tableView.delegate = self
     self.tableView.dataSource = self
+  }
+  override func prefersStatusBarHidden() -> Bool {
+    return true
   }
   
   //MARK: TableView delegate/datasource
@@ -142,7 +147,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
   //MARK: Helper methods
   func updatedHeaderView(){
     if self.tableView.contentOffset.y < -kTableHeaderHeight{
+      //Set starting y position of the view
       self.customTableHeaderView.frame.origin.y = self.tableView.contentOffset.y
+      //Increase size by increasing/decreasing size based on offset
       self.customTableHeaderView.frame.size.height = kTableHeaderHeight + -self.tableView.contentOffset.y - kTableHeaderHeight
       
       print(self.customTableHeaderView.frame.origin.y)
