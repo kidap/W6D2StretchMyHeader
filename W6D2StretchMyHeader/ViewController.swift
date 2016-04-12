@@ -15,7 +15,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
   @IBOutlet weak var headerDataLabel: UILabel!
   @IBOutlet weak var customTableHeaderView: UIView!
   
-  var sourceArray = [Dictionary<String,String>]()
+  var sourceArray = [NewsItem]()//[Dictionary<String,String>]()
   
   enum NewsCategory:String {
     case World
@@ -47,7 +47,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var headline = ""
   }
   
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
@@ -62,39 +62,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     let formatter = NSDateFormatter()
     formatter.dateFormat = "MMMM dd"
     self.headerDataLabel.text = formatter.stringFromDate(NSDate())
-
-    var data:Dictionary<String,String> = ["category": NewsCategory.World.rawValue ,
-                                          "headline": "Climate change protests, divestments meet fossil fuels realities"]
-    self.sourceArray.append(data)
     
-    data = [ "category": NewsCategory.Europe.rawValue,
-             "headline": "Scotland's 'Yes' leader says independence vote is 'once in a lifetime"]
-    self.sourceArray.append(data)
-    
-    data = [ "category": NewsCategory.MiddleEast.rawValue,
-             "headline": "Airstrikes boost Islamic State, FBI director warns more hostages possible"]
-    self.sourceArray.append(data)
-    
-    data = [ "category": NewsCategory.Africa.rawValue,
-             "headline": "Nigeria says 70 dead in building collapse; questions S. Africa victim claim"]
-    self.sourceArray.append(data)
-    
-    data = [ "category": NewsCategory.AsiaPacific.rawValue,
-             "headline": "Despite UN ruling, Japan seeks backing for whale hunting"]
-    self.sourceArray.append(data)
-    
-    data = [ "category": NewsCategory.Americas.rawValue,
-             "headline": "Officials: FBI is tracking 100 Americans who fought alongside IS in Syria"]
-    self.sourceArray.append(data)
-    
-    data = [ "category": NewsCategory.World.rawValue,
-             "headline": "South Africa in $40 billion deal for Russian nuclear reactors"]
-    self.sourceArray.append(data)
-    
-    data = [ "category": NewsCategory.Europe.rawValue,
-             "headline": "One million babies' created by EU student exchanges"]
-    self.sourceArray.append(data)
-  
+    self.sourceArray.append(NewsItem(category: .World, headline: "Climate change protests, divestments meet fossil fuels realities"))
+    self.sourceArray.append(NewsItem(category: .Europe, headline: "Scotland's 'Yes' leader says independence vote is 'once in a lifetime"))
+    self.sourceArray.append(NewsItem(category: .MiddleEast, headline: "Airstrikes boost Islamic State, FBI director warns more hostages possible"))
+    self.sourceArray.append(NewsItem(category: .Africa, headline: "Nigeria says 70 dead in building collapse; questions S. Africa victim claim"))
+    self.sourceArray.append(NewsItem(category: .AsiaPacific, headline: "Despite UN ruling, Japan seeks backing for whale hunting"))
+    self.sourceArray.append(NewsItem(category: .Americas, headline: "Officials: FBI is tracking 100 Americans who fought alongside IS in Syria"))
+    self.sourceArray.append(NewsItem(category: .World, headline: "South Africa in $40 billion deal for Russian nuclear reactors"))
+    self.sourceArray.append(NewsItem(category: .Europe, headline: "One million babies' created by EU student exchanges"))
   }
   func prepareView(){
     //Dynamic size of table view cell
@@ -102,15 +78,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     self.tableView.rowHeight = UITableViewAutomaticDimension
     
     self.navigationController?.navigationBar.hidden = true
-//    UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
+    //    UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     
     //Table view properties
     self.tableView.tableHeaderView = nil
     self.tableView.addSubview(self.customTableHeaderView)
-   
+    
     //Set position of the header view/image
     self.customTableHeaderView.frame.origin.y -= kTableHeaderHeight
-  
+    
     //Adjust the starting position of the table view
     self.tableView.contentInset.top = kTableHeaderHeight
     //self.tableView.contentOffset.y = -kTableHeaderHeight //Would be needed if using TableViewController
@@ -131,10 +107,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! CustomTableViewCell
     
-    let newsCat: NewsCategory =  NewsCategory.init(rawValue: self.sourceArray[indexPath.row]["category"]!)!
+    let newsCat: NewsCategory =  self.sourceArray[indexPath.row].category
     cell.categoryLabel.text = newsCat.rawValue
     cell.categoryLabel.textColor = newsCat.getTitleTextColor()
-    cell.headlineLabel.text = self.sourceArray[indexPath.row]["headline"]!
+    cell.headlineLabel.text = self.sourceArray[indexPath.row].headline
     return cell
     
   }
